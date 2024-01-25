@@ -37,9 +37,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()//
 				.antMatchers("/api/v1/user/login").permitAll()//
 				.antMatchers("/api/v1/user/register").permitAll()
-				.antMatchers("/h2-console/**/**").permitAll()
+//				.antMatchers("/h2-console/**/**").permitAll()
+//				.antMatchers("/api-docs").permitAll()
+//				.antMatchers("/swagger-ui/**").permitAll()
+//				.antMatchers("/swagger-ui**").permitAll()
+//				.antMatchers("/swagger-resources/**").permitAll()
+//				.antMatchers("/configuration/**").permitAll()
+//				.antMatchers("/webjars/**").permitAll()
 				// Disallow everything else..
-				.anyRequest().authenticated();
+				.antMatchers("/api/v1**").authenticated();
 
 		// If a user try to access a resource without having enough permissions
 //		http.exceptionHandling().accessDeniedPage("/login");
@@ -54,10 +60,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //		http.addFilterBefore(headerFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 
+	@Override
 	public void configure(WebSecurity web) throws Exception {
 		// Allow swagger to be accessed without authentication
 		web.ignoring()
 				.antMatchers("/v2/api-docs")//
+				.antMatchers("/api-docs")//
 				.antMatchers("/swagger-resources/**")//
 				.antMatchers("/swagger-ui.html")//
 				.antMatchers("/configuration/**")//

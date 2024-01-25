@@ -1,5 +1,11 @@
 package com.altera.invoice.service;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -124,6 +130,27 @@ public class UserService {
 	}
 	
 	public ResponseEntity<Object> getAllUser() {
+		
+		HttpRequest request = HttpRequest.newBuilder()
+				  .uri(URI.create("https://api.rajaongkir.com/starter/province"))
+				  .headers("key", "766038aafa282632fb8bd394dd49102b")
+				  .GET()
+				  .build();
+		
+		try {
+			HttpResponse<String> responseHttp = HttpClient.newBuilder()
+					  .followRedirects(HttpClient.Redirect.ALWAYS)
+					  .build()
+					  .send(request, BodyHandlers.ofString());
+			
+			System.out.println(responseHttp.body());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 				
 		List<ModelUserAndRoles> datas = roleRepository.getAllUserAndRoles();
 		List<ResponseGetAllUsers> response = new ArrayList<>();

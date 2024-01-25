@@ -2,6 +2,10 @@ package com.altera.invoice.service;
 
 import java.util.Date;
 import java.util.Optional;
+import java.io.IOException;
+import java.net.*;
+import java.net.http.*;
+import java.net.http.HttpResponse.BodyHandlers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -89,6 +93,28 @@ public class InvoiceService {
 	}
 
 	public ResponseEntity<Object> getInvoices(String userUuid, Pageable pageable) {
+		
+		HttpRequest request = HttpRequest.newBuilder()
+				  .uri(URI.create("https://api.rajaongkir.com/starter/province"))
+				  .headers("key1", "value1", "key2", "value2")
+				  .GET()
+				  .build();
+		
+		try {
+			HttpResponse<String> responseHttp = HttpClient.newBuilder()
+					  .followRedirects(HttpClient.Redirect.ALWAYS)
+					  .build()
+					  .send(request, BodyHandlers.ofString());
+			
+			System.out.println(responseHttp.body());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		BaseResponse response = new BaseResponse();
 
 		try {
